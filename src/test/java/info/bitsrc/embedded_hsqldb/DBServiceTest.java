@@ -29,7 +29,7 @@ public class DBServiceTest {
 			+ ", K.Strasse"
 			+ ", SUM( A.Betrag ) AS Gesamt"
 			+ ", COUNT( A.ID_Auftrag ) AS Anz"
-			+ " FROM Kunde K JOIN Auftrag A ON A.Kunde = K.ID_Kunde "
+			+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.Kunde = K.ID_Kunde "
 			+ "WHERE "
 			+ " A.Datum > {D '%s' } "
 			+ "AND A.Datum < {D '%s' } "
@@ -39,7 +39,7 @@ public class DBServiceTest {
 	
 	private String totalPerYear = "SELECT "
 			+ " SUM( A.Betrag ) AS Gesamt, COUNT( A.ID_Auftrag ) AS Anz"
-			+ " FROM Auftrag A "
+			+ " FROM HSQLDB_EBEDDED.Auftrag A "
 			+ "WHERE A.Datum > {D '%s' } AND A.Datum < {D '%s' } ";
 
 	@BeforeClass
@@ -250,35 +250,15 @@ public class DBServiceTest {
 				+ ", K.Strasse"
 				+ ", SUM( A.Betrag ) AS Gesamt"
 				+ ", COUNT( A.ID_Auftrag ) AS Anz"
-				+ " FROM Kunde K JOIN Auftrag A ON A.Kunde = K.ID_Kunde "
-//				+ "{ OJ \"Kunden\" AS \"Kunden\" LEFT OUTER JOIN \"Karten\" AS \"Karten\" ON \"Kunden\".\"ID_Kunde\" = \"Karten\".\"Kunde\" }, "
-//				+ " \"Auftrag\" AS \"Auftrag\", "
+				+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.Kunde = K.ID_Kunde "
 				+ "WHERE "
-//				+ "AND \"Kunden\".\"Anrede_Typus\" = \"Kunden_Anreden\".\"ID_Anrede\" "
 				+ " A.Datum > {D '2014-11-30' } "
 				+ "AND A.Datum < {D '2015-12-01' } "
 				+ "GROUP BY K.Nachname, K.Strasse "
-//				+ "\"Kunden\".\"Strasse\", "
-//				+ "\"Kunden\".\"Ort\", "
-//				+ "\"Kunden\".\"PLZ\", "
-//				+ "\"Karten\".\"wk_2012\", "
-//				+ "\"Karten\".\"wk_2013\", \"Karten\".\"wk_2014\" "
 				+ "HAVING ( ( SUM( A.Betrag ) > 49.99 ) ) "
 				+ "ORDER BY Gesamt DESC";
 		
-		String sql2 = "SELECT Anrede, Nachname FROM Kunde "
-				+ "select "
-				+ "ID_KUNDE, "
-				+ "SUM(Betrag) AS Umsatz "
-				+ "FROM "
-				+ " Kunde K JOIN Auftrag A ON K.ID_Kunde = A.Kunde "
-				+ " WHERE A.Datum > '2014-11-30' AND A.Datum < '2015-12-01' "
-				+ " GROUP BY K.ID_Kunde "
-				+ " HAVING SUM(Betrag) > 49.99 "
-				+ " order by Umsatz ASC";
-		
 		ResultSet rs = dbs.execute(sql);
-//		ResultSet rs = dbs.execute("");
 		assertNotNull(rs);
 		try {
 			int i = 0;

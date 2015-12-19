@@ -37,7 +37,7 @@ public class DBService {
 
 	void execute(String[] sqls) {
 		for(String s : sqls) {
-			if(s.trim().length() > 1)
+			if(s.trim().length() > 1 && ! s.startsWith("--"))
 				execute(s);
 		}
 	}
