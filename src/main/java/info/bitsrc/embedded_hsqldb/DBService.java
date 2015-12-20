@@ -37,8 +37,7 @@ public class DBService {
 
 	void execute(String[] sqls) {
 		for(String s : sqls) {
-			if(s.trim().length() > 1 && ! s.startsWith("--"))
-				execute(s);
+			execute(s);
 		}
 	}
 	
@@ -61,13 +60,18 @@ public class DBService {
 	    try (Scanner scanner = new Scanner(f)) {
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				ls.add(line);
+				if(isImportantLine(line))
+					ls.add(line);
 			}
 			scanner.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	    return ls.toArray(new String[ls.size()]);
+    }
+
+	boolean isImportantLine(String line) {
+	    return line.trim().length() > 1 && ! line.startsWith("--");
     }
 
 	void initDatabase(String dbPath) {
