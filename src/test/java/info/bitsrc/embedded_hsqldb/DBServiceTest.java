@@ -25,16 +25,15 @@ public class DBServiceTest {
 	static DBService dbs;
 
 	private String sqlAbove50 = "SELECT "
-			+ "  K.Nachname"
-			+ ", K.Strasse"
-			+ ", SUM( A.Betrag ) AS Gesamt"
-			+ ", COUNT( A.ID_Auftrag ) AS Anz"
+			+ "  Nachname"
+			+ ", Strasse"
+			+ ", SUM( Betrag ) AS Gesamt"
+			+ ", COUNT( ID_Auftrag ) AS Anz"
 			+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.Kunde = K.ID_Kunde "
 			+ "WHERE "
-			+ " A.Datum > {D '%s' } "
-			+ "AND A.Datum < {D '%s' } "
-			+ "GROUP BY K.Nachname, K.Strasse "
-			+ "HAVING ( ( SUM( A.Betrag ) > 49.99 ) ) "
+			+ " Datum > {D '%s' } AND Datum < {D '%s' } "
+			+ "GROUP BY Nachname, Strasse "
+			+ "HAVING ( ( SUM( Betrag ) > 49.99 ) ) "
 			+ "ORDER BY Gesamt DESC";
 	
 	private String totalPerYear = "SELECT "
