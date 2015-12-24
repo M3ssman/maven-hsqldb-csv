@@ -52,6 +52,17 @@ public class DBService {
         }
 	    return null;
     }
+	
+	int update(String sqlString) {
+		try {
+        	Statement stm = c.createStatement();
+	        int key = stm.executeUpdate(sqlString, Statement.RETURN_GENERATED_KEYS);
+	        return key;
+        } catch (SQLException e) {
+	        e.printStackTrace();
+        }
+	    return 0;
+	}
 
 	String[] extractCreateSchemaSQL(String path) {
 	    URL u =  getClass().getResource(path);

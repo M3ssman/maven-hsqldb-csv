@@ -29,7 +29,7 @@ public class DBServiceTest {
 			+ ", Strasse"
 			+ ", SUM( Betrag ) AS Gesamt"
 			+ ", COUNT( ID_Auftrag ) AS Anz"
-			+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.Kunde = K.ID_Kunde "
+			+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.ID_Kunde = K.ID_Kunde "
 			+ "WHERE "
 			+ " Datum > {D '%s' } AND Datum < {D '%s' } "
 			+ "GROUP BY Nachname, Strasse "
@@ -249,7 +249,7 @@ public class DBServiceTest {
 				+ ", K.Strasse"
 				+ ", SUM( A.Betrag ) AS Gesamt"
 				+ ", COUNT( A.ID_Auftrag ) AS Anz"
-				+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.Kunde = K.ID_Kunde "
+				+ " FROM HSQLDB_EBEDDED.Kunde K JOIN HSQLDB_EBEDDED.Auftrag A ON A.ID_Kunde = K.ID_Kunde "
 				+ "WHERE "
 				+ " A.Datum > {D '2014-11-30' } "
 				+ "AND A.Datum < {D '2015-12-01' } "
@@ -278,30 +278,24 @@ public class DBServiceTest {
         }
 	}
 	
-	@Test @Ignore
+	@Test
 	public void testExecute2() {
 		assertNotNull(dbs);
-		ResultSet rs = dbs.execute("SELECT \"Kunde_Anrede\".\"Anrede_Bezeichnung\" AS \"Anrede\", "
-				+ "\"Kunde\".\"Nachname\", "
-				+ "\"Kunde\".\"Strasse\" AS \"Straße\", "
-				+ "\"Kunde\".\"Ort\", "
-				+ "\"Kunde\".\"PLZ\", "
-				+ "SUM( \"Auftrag\".\"Betrag\" ) AS \"Gesamtbetrag\", "
-				+ "COUNT( \"Auftrag\".\"ID_Auftrag\" ) AS \"Anzahl Aufträge\" "
-//				+ "\"Karte\".\"wk_2003" AS "WK 03", 
-//				"Karten"."wk_2004" AS "WK 04", 
+		ResultSet rs = dbs.execute("SELECT "
+				+ "Anrede, Nachname, Strasse AS \"Straße\", Ort, PLZ, "
+				+ "SUM( Betrag ) AS Gesamtbetrag, "
+				+ "COUNT( ID_Auftrag ) AS \"Anzahl Aufträge\" "
 //				"Karten"."wk_2005" AS "WK 05", 
 //				"Karten"."wk_2006" AS "Wk 06", 
 //				"Karten"."wk_2007" AS "WK 07" 
 				+ "FROM "
-//				+ "{ OJ \"Kunde\" LEFT OUTER JOIN \"Karte\" ON \"Kunde\".\"ID_Kunde\" = \"Karte\".\"Kunde\" }, "
-				+ "Auftrag, Kunde_Anrede "
-				+ "WHERE ( \"Auftrag\".\"Kunde\" = \"Kunde\".\"ID_Kunde\" AND \"Kunde\".\"Anrede_Typus\" = \"Kunde_Anrede\".\"ID_Anrede\" ) "
-				+ "AND ( ( \"Auftrag\".\"Datum\" > {D '2006-11-06' } AND \"Auftrag\".\"Datum\" < {D '2007-12-01' } ) ) "
-				+ "GROUP BY \"Kunde_Anrede\".\"Anrede_Bezeichnung\", "
-				+ "\"Kunde\".\"Nachname\", \"Kunde\".\"Strasse\", \"Kunde\".\"Ort\", \"Kunde\".\"PLZ\" "
+				+ "{ OJ HSQLDB_EBEDDED.Kunde LEFT OUTER JOIN HSQLDB_EBEDDED.Karte ON Kunde.ID_Kunde = Karte.ID_Kunde }, "
+				+ "HSQLDB_EBEDDED.Auftrag "
+				+ "WHERE Auftrag.ID_Kunde = Kunde.ID_Kunde AND Datum > {D '2006-11-06' } AND Datum < {D '2007-12-01' } "
+				+ "GROUP BY Anrede, Nachname, Strasse, Ort, PLZ "
 //				+ ""Karten"."wk_2003", "Karten"."wk_2004", "Karten"."wk_2005", "Karten"."wk_2006", "Karten"."wk_2007" "
-				+ "HAVING ( ( SUM( \"Auftrag\".\"Betrag\" ) > 49.99 ) ) ORDER BY \"Kunde\".\"Nachname\" ASC");
+				+ "HAVING ( ( SUM( Betrag ) > 49.99 ) ) "
+				+ "ORDER BY Nachname ASC");
 		assertNotNull(rs);
 		try {
 	        while(rs.next()) {
@@ -310,6 +304,14 @@ public class DBServiceTest {
         } catch (SQLException e) {
 	        e.printStackTrace();
         }
+	}
+	
+	// Anrede VARCHAR(16), Nachname VARCHAR(32), Strasse VARCHAR(32), Ort VARCHAR(32), PLZ VARCHAR(8)
+	@Test
+	public void testInsertKunde() {
+		String sqlInsert = "INSERT INTO HSQLDB_EBEDDED.KUNDE (ID_Kunde, Anrede, Nachname, Strasse, Ort, PLZ) VALUES (DEFAULT, 'Herr', 'Mustermann', 'Rübenstraße 88','Musterstadt','00000');";
+		int rs = dbs.update(sqlInsert);
+		assertNotEquals(0, rs);
 	}
 	
 	@AfterClass
