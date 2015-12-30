@@ -1,7 +1,7 @@
 package info.bitsrc.embedded_hsqldb;
 
 import static org.junit.Assert.*;
-import info.bitsrc.embedded_hsqldb.DBService;
+import info.bitsrc.embedded_hsqldb.OldSchoolDBService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,13 +16,13 @@ import org.junit.Test;
  * @author u.hartwig
  *
  */
-public class DBServiceTest {
+public class OldSchoolDBServiceTest {
 
 	private String file1 = "/data/tab_karte.csv";
 
 	private String file2 = "/data/tab_karte_typ.csv";
 
-	static DBService dbs;
+	static OldSchoolDBService dbs;
 
 	private String sqlAbove50 = "SELECT "
 	        + "  Nachname"
@@ -43,7 +43,7 @@ public class DBServiceTest {
 
 	@BeforeClass
 	public static void setUpBefore() {
-		dbs = new DBService();
+		dbs = new OldSchoolDBService();
 		assertNotNull(dbs);
 	}
 
@@ -323,7 +323,7 @@ public class DBServiceTest {
 	public void testInsertKunde() {
 		String sqlInsert = "INSERT INTO HSQLDB_EBEDDED.KUNDE (ID_Kunde, Anrede, Nachname, Strasse, Ort, PLZ) VALUES (DEFAULT, 'Herr', 'Mustermann', 'Rübenstraße 88','Musterstadt','00100');";
 		for (int i = 0; i < 1_000; i++) {
-			int rs = dbs.update(sqlInsert);
+			int rs = dbs.insert(sqlInsert);
 			assertNotEquals(0, rs);
 		}
 	}
