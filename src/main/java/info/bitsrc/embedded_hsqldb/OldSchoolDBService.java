@@ -21,7 +21,7 @@ import java.util.Scanner;
  */
 public class OldSchoolDBService {
 
-	private Connection c;
+	Connection c;
 
 	public OldSchoolDBService() {
 		this("/data/", "/data/schema.sql");
