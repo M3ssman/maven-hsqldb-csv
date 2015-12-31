@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 /**
  * 
- * Establish Connection to Local DB Files from CSV Data Sets
+ * Provide basic Database Services - Execute and Insert.
  * 
  * @author u.hartwig
  *
@@ -23,10 +23,20 @@ public class OldSchoolDBService {
 
 	Connection c;
 
+	/**
+	 * Default Constructor for Tests
+	 */
 	public OldSchoolDBService() {
 		this("/data/", "/data/schema.sql");
 	}
 
+	/**
+	 * 
+	 * Create a new Service at given Path with given Schema-Definitions 
+	 * 
+	 * @param dbPath Folder with the CSV-Files
+	 * @param schemaPath File with HSQLDB-Schema-Definitions
+	 */
 	public OldSchoolDBService(String dbPath, String schemaPath) {
 		initDatabase(dbPath);
 		String[] sqlCreateSchemas = extractCreateSchemaSQL(schemaPath);
@@ -79,10 +89,23 @@ public class OldSchoolDBService {
 		return ls.toArray(new String[ls.size()]);
 	}
 
+	/**
+	 * 
+	 * Divide Comments (starting with regular SQL-Comment-Syntax) from all other non-empty Lines
+	 * 
+	 * @param line
+	 * @return boolean isImportantLine
+	 */
 	boolean isImportantLine(String line) {
 		return line.trim().length() > 1 && !line.startsWith("--");
 	}
 
+	/**
+	 * 
+	 * Basic Driver Set-Up
+	 * 
+	 * @param dbPath
+	 */
 	void initDatabase(String dbPath) {
 		String driver = "org.hsqldb.jdbcDriver";
 		try {
