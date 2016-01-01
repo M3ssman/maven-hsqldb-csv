@@ -22,7 +22,7 @@ there's not much to report, but feel free to extend this example.
 
 ## HSQLDB
 [HSQLDB] offers the Feature, to treat CSV or other delimited files like SQL tables without importing those explicitly into a running
-external Database-Server (like other DBMS like MySQL can do, too). The [HSQLDB]-Way of doing this is called "Text Tables" (see [HSQLDB Doc] for more Informations]).
+external Database-Server (like other DBMS like MySQL can do, too). The [HSQLDB]-Way of doing this is called "Text Tables" (see corresponding [HSQLDB Doc] for more Informations).
 Handling CSV-Files as Datasources for a [HSQLDB]-Application can be tricky. The Crux is, that the Database starts to create several hidden Files in the Folder
 where the local Database is supposed to reside. Don't edit these unless you really know what you're doing!
 The Definition of the Database-Schema with the Connection of CSV to Database can be found inside the "schema.ql"-File at src/main/resources/data/.
@@ -32,7 +32,7 @@ as you may note afterwards in the hidden File .script.
 ## Licence
 All Code placed in the public domain without any Warranty.
 
-## Sources
 [Apache Maven]:https://maven.apache.org/
 [HSQLDB]:http://hsqldb.org/
 [HSQLDB Doc]:http://hsqldb.org/doc/2.0/guide/texttables-chapt.html
+[JUnit]:http://junit.org/
