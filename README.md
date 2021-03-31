@@ -1,5 +1,7 @@
 # maven-hsqldb-csv
 
+![Java CI with Maven](https://github.com/M3ssman/maven-hsqldb-csv/workflows/Java%20CI%20with%20Maven/badge.svg) 
+
 ## Description
 
 This is an example how to integrate CSV-Files as Data-Sources to an Application using embedded [HSQLDB] 
